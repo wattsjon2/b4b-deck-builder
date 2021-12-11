@@ -1,0 +1,158 @@
+/* nav styles */
+
+.ct-nav{
+    display: flex;
+    justify-content:space-between;
+}
+
+/* target main logo image */
+.ct-nav img{
+    width: 25%;
+    max-width:100%;
+    margin-left: 2vw;
+}
+
+ul#horizontal-list{
+    list-style: none;
+    padding-top: 20px;
+}
+
+ul#horizontal-list li, ul#horizontal-list a{
+    display: inline;
+    text-decoration: none;
+    padding: 0.5vw;
+    color: black;
+}
+
+ul#horizontal-list a:nth-last-child(1){
+    border: 2px solid blue;
+    border-radius: 11px;
+    margin-right: 0.2vw;
+}
+
+/* End of nav styles */
+
+/* start of hero/header section */
+#header-text{
+    padding:2vw;
+}
+
+.header-image{
+    width: 82%;
+    max-width: 100%;
+}
+
+/* end of hear/header section */
+
+/* start of middle section */
+#middle-text{
+    text-align: center;
+    padding:13vw;
+}
+
+#middle-text h2{
+    padding: 1.5vw;
+}
+/* end of middle section */
+
+/* start of features section */
+#api-image,#graphql-image,#db-image{
+    margin-bottom:10vw;
+}
+
+#features-section{
+    margin:8vw;
+}
+/* end of features section */
+
+/* start of community section */
+#Drone-image{
+    width:50%;
+    max-width: 75%;
+    margin-left: 3vw;
+}
+/* end of community section */
+
+/* start of footer section */
+.footer-text-flex{
+    display: flex;
+    flex-direction: column;
+    margin-top: 3vw;
+}
+
+#footer-logo{
+    width:100%;
+    max-width: 100%;
+}
+
+#footer{
+    border-top:3px solid black;
+    margin-top: 20vh;
+}
+
+/* profile styles */
+.hero-section{
+    height:95vw;
+    background-image:linear-gradient(to right bottom, rgba(30,115,172,0.7), rgba(142,57,152,0.6)),url(../images/b4b\ 2.jpg);
+    background-size: cover;
+    background-position: 35% 50%;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 80vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 80vh, 0 100%);
+    position: relative;
+}
+
+.header-text{
+    display:flex;
+    justify-content: center;
+    padding-top: 10%;
+    padding-bottom: 10%;
+
+    color: white;
+}
+
+.card-box{
+    height:400px;
+    overflow-y: scroll;
+}
+#search-field{
+    width:50%;
+    float:left
+}
+#new-deck-name{
+    width:50%;
+    float:left
+}
+
+
+.inner-btn
+{
+    display: inline-block;
+    width:47%;
+}
+
+.full-btn
+{
+    width:100%;
+    align-content: center;
+}
+
+.small-btn
+{
+    width:32%;
+    align-content: center;
+}
+
+.container-custom
+{
+    margin-right: 15%;
+    margin-left: 15%;
+}
+
+.header-section{
+    height:32vw;
+    background-size: contain;
+    
+    
+    background-image:linear-gradient(to right bottom, rgba(245, 128, 138, 0.7), rgba(0, 0, 0, 0.6)),url(../images/b4b\ banner.jpg);
+    position: relative;
+}

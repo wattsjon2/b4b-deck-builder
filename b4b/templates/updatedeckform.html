@@ -1,0 +1,16 @@
+<!-- HTML Produced by the Flask Form -->
+
+<form method="POST">
+    {{ updatedeck.hidden_tag() }}
+    <div class="form-group">
+        <fieldset id = 'new-deck-name'>
+            {{ updatedeck.updatedeckname(class = "form-control", value = deckname)}}
+        </fieldset>
+    
+        <!-- submit button area-->
+        <span>{{ updatedeck.update(class='btn btn-success') }}</span>
+        <span>{{ updatedeck.cancel(class='btn btn-warning') }}</span>
+
+        
+    </div>
+</form>

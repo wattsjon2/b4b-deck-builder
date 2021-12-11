@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+
+<div class = ''>
+<header class="header-section">
+    <h3 class = "header-text">Back 4 Blood deck builder<br>Welcome {{ current_user.email }}! </h3>
+</header>
+</div>
+
+
+<!--
+<div class="">
+    <img src="../../static/images/b4b banner.jpg" alt="" style="width:100%;">
+    <h3 class = "header-text">The Back 4 Blood deck builder <br> Welcome {{ current_user.email }}! </h3>
+</div>
+-->
+
+
+<div id='saved-loc' class="container">
+    <div class = "col-12 d-flex justify-content-center my-2">
+        <h4 class ="">Here are your saved decks</h4>
+    </div>
+    <div class = "row col-12">
+        
+            
+    
+    
+    {% for deck in mydecks %}
+    {% if deck['user_token'] == current_user.token %}
+        <div class = "col-6" ><p>{{deck['deck_name']}}</p></div>   
+        <div class = 'col-6'>
+            <form method = 'post' action="">   
+            <button class="small-btn inner-btn btn btn-primary btn-sm" type = 'submit' name = 'show' value = "{{deck['id']}}">Show/update</button>
+            <button class="small-btn inner-btn btn btn-secondary btn-sm" type = 'submit' name = 'duplicate' value = "{{deck['id']}}">Duplicate</button>
+            <button class="small-btn inner-btn btn btn-danger btn-sm" type = 'submit' name = 'delete' value = "{{deck['id']}}">Delete</button>
+            </form>
+        </div>
+    {% endif %}      
+    {% endfor %}
+    </div>
+</div>
+
+
+<div id = 'deck-loc' class="container my-2" >
+    {% if deckid != [] %}
+        {% include 'updatedeckform.html' %}
+    {% else %}
+        {% include 'newdeckform.html' %}
+    {% endif %}
+</div>
+
+{% else %}
+
+<header class="header-section">
+    <h3 class = "header-text">Back 4 Blood deck builder </h3>
+</header>
+
+<div id = 'deck-loc' class="container mt-2">
+    <h3><span><a href="{{  url_for('auth.signin')  }}">Sign In</a></span> to save your deck and view saved decks</h3>
+    <p><span><a href="{{  url_for('auth.signup')  }}">Create</a></span> an account</p>
+</div>
+
+{% endif %}
+
+<div id = 'add-loc' class = 'container-custom'>
+    <div class="card-box">
+        <div class = "row">
+            {% if deck == [] %}
+            <div class="col-12 d-flex justify-content-center">
+                <p>There are no cards in your deck</p>
+            </div>
+            
+            {% else %}
+                {% for i in range(deck| length) %}
+                    {% set picture_name = deck[i] | string() %}
+                    {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if i == 0 and (deck| length) == 1%}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                        <form method = 'post' action="">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
+                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                        </form>
+                    </div>
+                    {% elif i == 0 %}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                        <form method = 'post' action="">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
+                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                        </form>
+                    </div>
+                    {% elif i == (deck| length) - 1 %}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                        <form method = 'post' action="">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
+                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                        <form method = 'post' action="">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
+                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                        </form>
+                    </div>
+                    {% endif %}  
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+            
+
+    <div id = 'search-loc' class="container my-2">
+    {% include 'searchform.html' %}
+    </div>
+<div  class = 'container-custom'>
+    <div class="card-box">
+        <div class = "row">
+        {% if cards != [] %}
+            {% if searchField == '' %}
+                {% for card in cards %}
+                    {% set picture_name = card['id'] | string() %}
+                    {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if card['id'] not in deck %}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+
+                    <form method = 'post' action="">
+                        <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
+                    </form>
+                    </div>
+                    {% endif %}  
+                {% endfor %}
+            
+            {% else %}
+                {% for card in cards %}
+                    {% set picture_name = card['id'] | string() %}
+                    {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if searchField.lower() in card['card_name'].lower() or searchField in card['card_description'].lower() %}
+                        {% if card['id'] not in deck %}
+                            <div class="col-2 mb-2">
+                                <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                                <form method = 'post' action="">
+                                    <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
+                                </form>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% endif %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+<!--JSON.parse('{{ view | tojson }}')
+
+function getPositionY() {
+    }
+      window.addEventListener("load", () => {
+        let loc = JSON.parse('{{ view | tojson }}');
+          console.log(loc)
+        if (loc != ''){
+            let rect = document.getElementById(loc).getBoundingClientRect();
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let y = rect.top + scrollTop
+            console.log(y)
+            
+            window.scrollTo({
+            top: y,
+            left: 0,
+            behavior: 'instant',
+            });
+            }
+        }
+    )
+
+</script>
+
+-->
+<script>
+
+function getPositionY() {
+    }
+      window.addEventListener("load", () => {
+        let loc = JSON.parse('{{ view | tojson }}');
+          console.log(loc)
+        if (loc != ''){
+            let rect = document.getElementById(loc).getBoundingClientRect();
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let y = rect.top + scrollTop
+            console.log(y)
+            
+            window.scrollTo({
+            top: y,
+            left: 0,
+            behavior: 'instant',
+            });
+            }
+        }
+    )
+
+</script>
+
+
+<!-- 
+<div>
+    {% if cards != [] %}
+    <h3>Here are the cards!</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>card id</th>
+            <th>card name</th>
+            <th>card description</th>
+        </tr>
+        {% for card in cards %}
+        <tr>
+            <td>{{card['id']}}</td>
+            <td>{{card['card_name']}}</td>
+            <td>{{card['card_description']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h3>No cards added</h3>
+    {% endif %}
+</div>
+
+-->
+
+
+
+{% endblock content %}

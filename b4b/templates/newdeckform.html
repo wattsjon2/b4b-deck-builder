@@ -1,0 +1,15 @@
+<!-- HTML Produced by the Flask Form -->
+
+<form method="POST">
+    {{ newdeck.hidden_tag() }}
+    <div class="form-group">
+        <fieldset id = 'new-deck-name'>
+            {{ newdeck.newdeckname(class = "form-control", placeholder = "enter your deck name here...") }}
+        </fieldset>
+    
+        <!-- submit button area-->
+        <span>{{ newdeck.save(class='btn btn-success') }}</span>
+
+        
+    </div>
+</form>
