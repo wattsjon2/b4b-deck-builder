@@ -156,3 +156,16 @@ ul#horizontal-list a:nth-last-child(1){
     background-image:linear-gradient(to right bottom, rgba(245, 128, 138, 0.7), rgba(0, 0, 0, 0.6)),url(../images/b4b\ banner.jpg);
     position: relative;
 }
+
+.text-field
+{
+    border: 1px solid lightgray;
+    padding: 10px;
+    border-radius: 7px;
+}
+
+.text-field:focus { 
+    outline: none;
+    border-color: #7abdf3;
+    box-shadow: 0 0 0 6px #aad6fa;
+}

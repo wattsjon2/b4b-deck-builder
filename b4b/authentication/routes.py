@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import check_password_hash
 from b4b.forms import UserLoginForm
 from b4b.models import db, User
@@ -57,6 +57,8 @@ def signin():
             if logged_user and check_password_hash(logged_user.password, password):
                 login_user(logged_user)
                 flash('You werer sucessfully loged in', 'auth-success')
+                session['show_decks'] = 'False'
+
                 return redirect(url_for('site.home'))
             else:
                 passwordfail = True

@@ -4,7 +4,7 @@
     {{ search.hidden_tag() }}
     <div class="form-group">
         <fieldset id = 'search-field'>
-            {{ search.searchfield(class = "form-control", placeholder = "search for cards here...") }}
+            {{ search.searchfield(class = "form-control", value = session['search']) }}
         </fieldset>
     
         <!-- submit button area-->

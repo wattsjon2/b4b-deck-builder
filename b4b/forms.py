@@ -11,7 +11,7 @@ class UserLoginForm(FlaskForm):
 
 
 class CardSearchForm(FlaskForm):
-    searchfield = StringField('Search', validators= [DataRequired()])
+    searchfield = StringField('Search')
     search = SubmitField() 
     reset = SubmitField()
     showsupply = SubmitField()

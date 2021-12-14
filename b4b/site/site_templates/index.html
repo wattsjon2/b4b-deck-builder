@@ -2,6 +2,9 @@
 
 {% block content %}
 
+{% set view = session['location'] %}
+
+
 {% if current_user.is_authenticated %}
 
 <div class = ''>
@@ -18,6 +21,58 @@
 </div>
 -->
 
+<div id = 'radio-buttons'>
+
+{% if session['show_decks'] == 'False' %}
+
+<div class="container-sm d-flex justify-content-center btn-group btn-group-toggle my-2" data-toggle="buttons">
+    <label class="btn btn-primary active">
+      <input type="radio" name="options" id="option1" autocomplete="off" value = '{{current_user.token}}' onclick = 'showDecks(this.value)'> Show my decks
+    </label>
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="options" id="option2" autocomplete="off" checked> Hide my decks
+    </label>
+  </div>
+<p>{{ session['show_decks']}}</p>
+<p>{{ session['test']}}</p>
+
+
+
+{% else %}
+
+<div class="container-sm d-flex justify-content-center btn-group btn-group-toggle my-2" data-toggle="buttons">
+    <label class="btn btn-primary active">
+      <input type="radio" name="options" id="option1" autocomplete="off" checked> Show my decks
+    </label>
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="options" id="option2" autocomplete="off" value = 'test hide' onclick = 'hideDecks(this.value)'> Hide my decks
+    </label>
+  </div>
+<p>{{ session['show_decks']}}</p>
+<p>{{ session['test']}}</p>
+<p>{{ session['my_decks']}}</p>
+
+<div id='saved-loc' class="container">
+    <div class = "row col-12">
+    {% for deck in session['my_decks'] %}
+        <div class = "col-6" ><p>{{deck['deck_name']}}</p></div>   
+        <div class = 'col-6'>   
+            <button class="small-btn inner-btn btn btn-primary btn-sm" name = 'show' value = "{{deck['id']}}" onclick = 'showAjax(this.value)'>Show/update</button>
+            <button class="small-btn inner-btn btn btn-secondary btn-sm" name = 'duplicate' value = "{{deck['id']}}" onclick = 'duplicateAjax(this.value)'>Duplicate</button>
+            {% if session['deckname'] == "" %}
+                
+                <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" onclick = 'deleteAjax(this.value)'>Delete</button>
+            {% else %}
+                <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" disabled>Delete</button>
+            {% endif %}
+        </div>      
+    {% endfor %}
+    </div>
+</div>
+
+{% endif %}
+
+</div>
 
 <div id='saved-loc' class="container">
     <div class = "col-12 d-flex justify-content-center my-2">
@@ -45,7 +100,7 @@
 
 
 <div id = 'deck-loc' class="container my-2" >
-    {% if deckid != [] %}
+    {% if session['deckname'] != "" %}      
         {% include 'updatedeckform.html' %}
     {% else %}
         {% include 'newdeckform.html' %}
@@ -65,104 +120,101 @@
 
 {% endif %}
 
-<div id = 'add-loc' class = 'container-custom'>
+<div  class = 'container-custom'>
     <div class="card-box">
-        <div class = "row">
-            {% if deck == [] %}
-            <div class="col-12 d-flex justify-content-center">
-                <p>There are no cards in your deck</p>
-            </div>
-            
-            {% else %}
-                {% for i in range(deck| length) %}
-                    {% set picture_name = deck[i] | string() %}
-                    {% set file_name = "images/cards/" + picture_name + ".png" %}
-                    {% if i == 0 and (deck| length) == 1%}
-                    <div class="col-2 mb-2">
-                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                        <form method = 'post' action="">
+        <div id = 'add-loc'>
+            <div  class = "row">
+                {% if session['deck'] == [] %}
+                <div class="col-12 d-flex justify-content-center">
+                    <p>There are no cards in your deck</p>
+                </div>
+                
+                {% else %}
+                    {% for i in range(session['deck']| length) %}
+                        {% set picture_name = session['deck'][i] | string() %}
+                        {% set file_name = "images/cards/" + picture_name + ".png" %}
+                        {% if i == 0 and (session['deck']| length) == 1%}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
                             <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
-                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
-                        </form>
-                    </div>
-                    {% elif i == 0 %}
-                    <div class="col-2 mb-2">
-                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                        <form method = 'post' action="">
+                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button></span>
+                            <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                        </div>
+                        {% elif i == 0 %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
                             <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
-                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
-                        </form>
-                    </div>
-                    {% elif i == (deck| length) - 1 %}
-                    <div class="col-2 mb-2">
-                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                        <form method = 'post' action="">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
-                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
-                        </form>
-                    </div>
-                    {% else %}
-                    <div class="col-2 mb-2">
-                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                        <form method = 'post' action="">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
-                            <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
-                        </form>
-                    </div>
-                    {% endif %}  
-                {% endfor %}
-            {% endif %}
+                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'>Right</button></span>
+                            <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                        </div>
+                        {% elif i == (session['deck']| length) - 1 %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'>Left</button>
+                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button></span>
+                            <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                        </div>
+                        {% else %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'>Left</button>
+                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'>Right</button></span>
+                            <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
 
+                        </div>
+                        {% endif %}  
+                    {% endfor %}
+                {% endif %}
+
+            </div>
         </div>
     </div>
 </div>
 
             
 
-    <div id = 'search-loc' class="container my-2">
-    {% include 'searchform.html' %}
+<div  class="container my-2">
+    <div id = 'search-loc'>
+        <input class="text-field rounded w-50" type="text" id="searchtext" name="fname" value="{{ session['search'] }}">
+        <button class = "btn btn-primary" value="Search" onclick = 'searchAjax()'>Search</button>
+        <button class = "btn btn-secondary" value="Reset" onclick = 'resetAjax()'>Reset</button>
     </div>
+</div>
+
 <div  class = 'container-custom'>
     <div class="card-box">
-        <div class = "row">
-        {% if cards != [] %}
-            {% if searchField == '' %}
-                {% for card in cards %}
-                    {% set picture_name = card['id'] | string() %}
-                    {% set file_name = "images/cards/" + picture_name + ".png" %}
-                    {% if card['id'] not in deck %}
+        <div id = 'cards-loc'>
+        <div  class = "row">
+        {% if session['cards'] != [] %}
+
+            {% if session['search_cards'] != 'empty' %}
+
+            {% for card in session['search_cards'] %}
+                {% set picture_name = card['id'] | string() %}
+                {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if card['id'] not in session['deck'] %}
                     <div class="col-2 mb-2">
                         <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-
-                    <form method = 'post' action="">
-                        <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
-                    </form>
+                    <button class="full-btn btn btn-success btn-sm mt-1" name = 'addAjax' value = "{{card['id']}}" onclick = 'addAjax(this.value)' >Add Card</button>
                     </div>
                     {% endif %}  
-                {% endfor %}
-            
+        {% endfor %}
+
+
             {% else %}
-                {% for card in cards %}
+                {% for card in session['cards'] %}
                     {% set picture_name = card['id'] | string() %}
                     {% set file_name = "images/cards/" + picture_name + ".png" %}
-                    {% if searchField.lower() in card['card_name'].lower() or searchField in card['card_description'].lower() %}
-                        {% if card['id'] not in deck %}
-                            <div class="col-2 mb-2">
-                                <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                                <form method = 'post' action="">
-                                    <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
-                                </form>
+                        {% if card['id'] not in session['deck'] %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                        <button class="full-btn btn btn-success btn-sm mt-1" name = 'addAjax' value = "{{card['id']}}" onclick = 'addAjax(this.value)' >Add Card</button>
                         </div>
-                        {% endif %}
-                    {% endif %}
+                        {% endif %}  
                 {% endfor %}
-            
-                {% endif %}
+            {% endif %}             
         {% endif %}
+        </div>
         </div>
     </div>
 </div>
@@ -191,13 +243,24 @@ function getPositionY() {
 
 </script>
 
+function sessiontest() {
+    '<%Session["search"] = "test2"; %>';
+    var testsession = '<%= Session["search"] %>'
+    console.log(testsession)
+    $("#test2").load(" #test2 > *");
+    let loc = JSON.parse('{{ view | tojson }}');
+}    
+
+
+
 -->
+
 <script>
 
 function getPositionY() {
     }
       window.addEventListener("load", () => {
-        let loc = JSON.parse('{{ view | tojson }}');
+        let loc = JSON.parse('{{ view | tojson }}')
           console.log(loc)
         if (loc != ''){
             let rect = document.getElementById(loc).getBoundingClientRect();
@@ -213,6 +276,27 @@ function getPositionY() {
             }
         }
     )
+ 
+function testupdate(value){
+    test_id = value
+
+    req = $.ajax({
+            url : '/test',
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            data : JSON.stringify({ 'test_data' : test_id})
+        })
+    
+        req.done(function() {
+            $("#test-loc").load(location.href + " #test-loc");
+        });
+};
+
+
+
+
+
 
 </script>
 

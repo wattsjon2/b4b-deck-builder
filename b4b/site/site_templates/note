@@ -1,0 +1,118 @@
+allCards = []
+for card in cards:
+    allCards.append(
+        {
+            'id':card.id,
+            'card_name':card.card_name,
+            'card_description':card.card_description,
+            'supply_line':card.supply_line,
+            'supply_track':card.supply_track
+        }
+    )
+session['cards'] = allCards
+
+
+
+
+<div  class = 'container-custom'>
+    <div class="card-box">
+        <div class = "row">
+        {% if cards != [] %}
+            {% if session['search'] == '' %}
+                {% for card in cards %}
+                    {% set picture_name = card['id'] | string() %}
+                    {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if card['id'] not in session['deck'] %}
+                    <div class="col-2 mb-2">
+                        <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+
+                    <form method = 'post' action="">
+                        <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
+                    </form>
+                    </div>
+                    {% endif %}  
+                {% endfor %}
+            
+            {% else %}
+                {% for card in cards %}
+                    {% set picture_name = card['id'] | string() %}
+                    {% set file_name = "images/cards/" + picture_name + ".png" %}
+                    {% if session['search'].lower() in card['card_name'].lower() or session['search'].lower() in card['card_description'].lower() %}
+                        {% if card['id'] not in session['deck'] %}
+                            <div class="col-2 mb-2">
+                                <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                                <form method = 'post' action="">
+                                    <button class="full-btn btn btn-success btn-sm mt-1" type = 'submit' name = 'add' value = "{{card['id']}}" >Add Card</button>
+                                </form>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            
+                {% endif %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+<div  class = 'container-custom'>
+    <div class="card-box">
+        <div id = 'add-loc'>
+            <div  class = "row">
+                {% if session['deck'] == [] %}
+                <div class="col-12 d-flex justify-content-center">
+                    <p>There are no cards in your deck</p>
+                </div>
+                
+                {% else %}
+                    {% for i in range(session['deck']| length) %}
+                        {% set picture_name = session['deck'][i] | string() %}
+                        {% set file_name = "images/cards/" + picture_name + ".png" %}
+                        {% if i == 0 and (session['deck']| length) == 1%}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <form method = 'post' action="">
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
+                                <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                            </form>
+                        </div>
+                        {% elif i == 0 %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <form method = 'post' action="">
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
+                                <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                            </form>
+                        </div>
+                        {% elif i == (session['deck']| length) - 1 %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <form method = 'post' action="">
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button>
+                                <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="col-2 mb-2">
+                            <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
+                            <form method = 'post' action="">
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveLeft' value = "{{i}}">Left</button>
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" type = 'submit' name = 'moveRight' value = "{{i}}">Right</button>
+                                <button class="full-btn btn btn-danger btn-sm mt-1" type = 'submit' name = 'removeCard' value = "{{i}}">Remove</button>
+                            </form>
+                                <button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'>Left</button>
+                                <span><button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'>Right</button></span>
+                                <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+
+                        </div>
+                        {% endif %}  
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
