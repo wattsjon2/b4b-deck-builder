@@ -152,14 +152,17 @@ def addCardAjax():
         cardid = request.json['card_id']
         mydeck = session.get('deck')
         if len(mydeck) < 15:
-                mydeck.append(int(cardid))
-                session['deck'] = mydeck                
-                session['supply_line'].append(getSupplyLine(int(cardid)))
-                session['supply_track'].append(getSupplyTrack(int(cardid)))
+            mydeck.append(int(cardid))
+            session['deck'] = mydeck                
+            session['supply_line'].append(getSupplyLine(int(cardid)))
+            session['supply_track'].append(getSupplyTrack(int(cardid)))
 
+            return jsonify({'result':'success'})
 
+        else:
+            return jsonify({'result':'failure'})
 
-        return jsonify({'result':'success'})
+        
 
 @site.route('/_search', methods = ['GET','POST'])
 def searchAjax():  
@@ -394,9 +397,11 @@ def saveAjax():
             session['supply_line'] = []
             session['supply_track'] = []
             
-            
+            return jsonify({'result':'success'})
 
-        return jsonify({'result':'success'})
+        else:
+
+            return jsonify({'result':'failure'})
 
 @site.route('/_update', methods = ['GET','POST'])
 def updateAjax():  
@@ -433,7 +438,11 @@ def updateAjax():
             session['supply_line'] = []
             session['supply_track'] = []
 
-        return jsonify({'result':'success'})
+            return jsonify({'result':'success'})
+        
+        else:
+            
+            return jsonify({'result':'failure'})
 
 @site.route('/_cancel', methods = ['GET','POST'])
 def cancelAjax():  

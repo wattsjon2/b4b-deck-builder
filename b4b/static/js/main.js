@@ -21,7 +21,11 @@ function moveLeftAjax(value){
             data : JSON.stringify({ 'index' : value})
         })
     
-        req.done(function() {
+        req.done(function(response) {
+            console.log(response)
+            if (response['result'] == 'success'){
+                console.log(response)
+            }
             $("#add-loc").load(location.href + " #add-loc");
         });
 };
@@ -51,10 +55,14 @@ function addAjax(value){
             data : JSON.stringify({ 'card_id' : value})
         })
         
-        req.done(function() {
-            $("#cards-loc").load(location.href + " #cards-loc");
-            $("#add-loc").load(location.href + " #add-loc");
-            
+        req.done(function(response) {
+            if (response['result'] == 'success') {
+                $("#cards-loc").load(location.href + " #cards-loc");
+                $("#add-loc").load(location.href + " #add-loc");
+            }
+            else {
+                alert("You have reached the maximum deck size of 15 cards");  
+            }
         });
 };
 
@@ -189,51 +197,75 @@ function deleteAjax(value){
 function saveAjax(){
 
     let nameText = document.getElementById('nametext').value;
+
+    if (nameText == ''){
+        alert("Please enter a name for your deck");
+    }
     
+    else {
     
 
-    req = $.ajax({
-        url : '/_save',
-        type: 'POST',
-        contentType: 'application/json;charset=UTF-8',
-        dataType: "json",
-        data : JSON.stringify({ 'deck_name' : nameText })
+        req = $.ajax({
+            url : '/_save',
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            data : JSON.stringify({ 'deck_name' : nameText })
 
-    })
-    
-    req.done(function() {
-        $("#cards-loc").load(location.href + " #cards-loc");
-        $("#add-loc").load(location.href + " #add-loc");
-        $("#name-loc").load(location.href + " #name-loc");
-        $("#save-loc").load(location.href + " #save-loc");
+        })
         
-    });
+        
+        req.done(function(response) {
+
+            if (response['result'] == 'success') {
+            
+                $("#cards-loc").load(location.href + " #cards-loc");
+                $("#add-loc").load(location.href + " #add-loc");
+                $("#name-loc").load(location.href + " #name-loc");
+                $("#save-loc").load(location.href + " #save-loc");
+            }
+            else {
+                alert("Please add at least one card to your deck");
+            }
+            
+        });
     
+    }
 };
 
 function updateAjax(){
 
     let nameText = document.getElementById('nametext').value;
 
-    
+    if (nameText == ''){
+        alert("Please enter a name for your deck");
+    }
+    else{
 
-    req = $.ajax({
-        url : '/_update',
-        type: 'POST',
-        contentType: 'application/json;charset=UTF-8',
-        dataType: "json",
-        data : JSON.stringify({ 'deck_name' : nameText  })
+        req = $.ajax({
+            url : '/_update',
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            data : JSON.stringify({ 'deck_name' : nameText  })
 
-    })
-    
-    req.done(function() {
-        $("#cards-loc").load(location.href + " #cards-loc");
-        $("#add-loc").load(location.href + " #add-loc");
-        $("#name-loc").load(location.href + " #name-loc");
-        $("#save-loc").load(location.href + " #save-loc");
+        })
         
-    });
-    
+        req.done(function(response) {
+
+            if (response['result'] == 'success') {
+            
+                $("#cards-loc").load(location.href + " #cards-loc");
+                $("#add-loc").load(location.href + " #add-loc");
+                $("#name-loc").load(location.href + " #name-loc");
+                $("#save-loc").load(location.href + " #save-loc");
+            }
+            else {
+                alert("Please add at least one card to your deck");
+            }
+            
+        });
+    }
 };
 
 function cancelAjax(){
