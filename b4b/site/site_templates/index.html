@@ -2,7 +2,6 @@
 
 {% block content %}
 
-{% set view = session['location'] %}
 
 
 {% if current_user.is_authenticated %}
@@ -25,48 +24,46 @@
 
 {% if session['show_decks'] == 'False' %}
 
-<div class="container-sm d-flex justify-content-center btn-group btn-group-toggle my-2" data-toggle="buttons">
-    <label class="btn btn-primary active">
-      <input type="radio" name="options" id="option1" autocomplete="off" value = '{{current_user.token}}' onclick = 'showDecks(this.value)'> Show my decks
+<div  class="container-sm d-flex justify-content-center btn-group btn-group-toggle my-2" data-toggle="buttons">
+    <label class="btn btn-danger active">
+      <input type="radio" name="options" id="showdecksoption1" autocomplete="off" value = '{{current_user.token}}' onclick = 'showDecks()'> Show my decks
     </label>
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="options" id="option2" autocomplete="off" checked> Hide my decks
+    <label class="btn btn-outline-danger">
+      <input type="radio" name="options" id="showdecksoption2" autocomplete="off" value = '{{current_user.token}}' checked> Hide my decks
     </label>
   </div>
-<p>{{ session['show_decks']}}</p>
-<p>{{ session['test']}}</p>
 
 
 
 {% else %}
 
 <div class="container-sm d-flex justify-content-center btn-group btn-group-toggle my-2" data-toggle="buttons">
-    <label class="btn btn-primary active">
-      <input type="radio" name="options" id="option1" autocomplete="off" checked> Show my decks
+    <label class="btn btn-danger active">
+      <input type="radio" name="options" id="showdecksoption1" autocomplete="off" value = '{{current_user.token}}' checked> Show my decks
     </label>
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="options" id="option2" autocomplete="off" value = 'test hide' onclick = 'hideDecks(this.value)'> Hide my decks
+    <label class="btn btn-outline-danger">
+      <input type="radio" name="options" id="showdecksoption2" autocomplete="off" value = '{{current_user.token}}' onclick = 'hideDecks()'> Hide my decks
     </label>
   </div>
-<p>{{ session['show_decks']}}</p>
-<p>{{ session['test']}}</p>
-<p>{{ session['my_decks']}}</p>
 
-<div id='saved-loc' class="container">
-    <div class = "row col-12">
-    {% for deck in session['my_decks'] %}
-        <div class = "col-6" ><p>{{deck['deck_name']}}</p></div>   
-        <div class = 'col-6'>   
-            <button class="small-btn inner-btn btn btn-primary btn-sm" name = 'show' value = "{{deck['id']}}" onclick = 'showAjax(this.value)'>Show/update</button>
-            <button class="small-btn inner-btn btn btn-secondary btn-sm" name = 'duplicate' value = "{{deck['id']}}" onclick = 'duplicateAjax(this.value)'>Duplicate</button>
-            {% if session['deckname'] == "" %}
-                
-                <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" onclick = 'deleteAjax(this.value)'>Delete</button>
-            {% else %}
-                <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" disabled>Delete</button>
-            {% endif %}
-        </div>      
-    {% endfor %}
+
+<div class="container">
+    <div id='save-loc'>
+        <div class = "row col-12">
+        {% for deck in session['my_decks'] %}
+            <div class = "col-6" ><p>{{deck['deck_name']}}</p></div>   
+            <div class = 'col-6'>   
+                <button class="small-btn inner-btn btn btn-primary btn-sm" name = 'show' value = "{{deck['id']}}" onclick = 'showAjax(this.value)'>Show/update</button>
+                <button class="small-btn inner-btn btn btn-secondary btn-sm" name = 'duplicate' value = "{{deck['id']}}" onclick = 'duplicateAjax(this.value)'>Duplicate</button>
+                {% if session['deck_name'] == "" %}
+                    
+                    <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" onclick = 'deleteAjax(this.value)'>Delete</button>
+                {% else %}
+                    <button class="small-btn inner-btn btn btn-danger btn-sm" name = 'delete' value = "{{deck['id']}}" disabled>Delete</button>
+                {% endif %}
+            </div>      
+        {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -74,38 +71,35 @@
 
 </div>
 
-<div id='saved-loc' class="container">
-    <div class = "col-12 d-flex justify-content-center my-2">
-        <h4 class ="">Here are your saved decks</h4>
+<div  class="container my-2">
+    <div id = 'name-loc'>
+    {% if session['deck_name'] != "" %}      
+    <div>
+        <input class="text-field rounded w-50" type="text" id="nametext" name="fname" value="{{ session['deck_name'] }}">
+        <button class = "btn btn-success" value="Update" onclick = 'updateAjax()'>Update</button>
+        <button class = "btn btn-warning" value="Cancel" onclick = 'cancelAjax()'>Cancel</button>
+        {% if session['supply_state'] == 'True' %}
+        <button class = "btn btn-outline-dark" value="HideSupply" onclick = 'hideSupplyAjax()'>Hide Supply Line Info</button>
+        {% else %}
+        <button class = "btn btn-dark " value="HideSupply" onclick = 'showSupplyAjax()'>Show Supply Line Info</button>
+        {% endif %}
     </div>
-    <div class = "row col-12">
-        
-            
-    
-    
-    {% for deck in mydecks %}
-    {% if deck['user_token'] == current_user.token %}
-        <div class = "col-6" ><p>{{deck['deck_name']}}</p></div>   
-        <div class = 'col-6'>
-            <form method = 'post' action="">   
-            <button class="small-btn inner-btn btn btn-primary btn-sm" type = 'submit' name = 'show' value = "{{deck['id']}}">Show/update</button>
-            <button class="small-btn inner-btn btn btn-secondary btn-sm" type = 'submit' name = 'duplicate' value = "{{deck['id']}}">Duplicate</button>
-            <button class="small-btn inner-btn btn btn-danger btn-sm" type = 'submit' name = 'delete' value = "{{deck['id']}}">Delete</button>
-            </form>
-        </div>
-    {% endif %}      
-    {% endfor %}
     </div>
-</div>
-
-
-<div id = 'deck-loc' class="container my-2" >
-    {% if session['deckname'] != "" %}      
-        {% include 'updatedeckform.html' %}
     {% else %}
-        {% include 'newdeckform.html' %}
+    <div>
+        <input class="text-field rounded w-50" type="text" id="nametext" name="fname" placeholder="Name deck here...">
+        <button class = "btn btn-success" value="Save" onclick = 'saveAjax()'>Save</button>
+        {% if session['supply_state'] == 'True' %}
+        <button class = "btn btn-outline-dark" value="HideSupply" onclick = 'hideSupplyAjax()'>Hide Supply Line Info</button>
+        {% else %}
+        <button class = "btn btn-dark " value="HideSupply" onclick = 'showSupplyAjax()'>Show Supply Line Info</button>
+        {% endif %}
+    </div>
     {% endif %}
+
+    </div>
 </div>
+
 
 {% else %}
 
@@ -116,6 +110,16 @@
 <div id = 'deck-loc' class="container mt-2">
     <h3><span><a href="{{  url_for('auth.signin')  }}">Sign In</a></span> to save your deck and view saved decks</h3>
     <p><span><a href="{{  url_for('auth.signup')  }}">Create</a></span> an account</p>
+</div>
+
+<div class = 'container my-2'>
+    <div id = 'name-loc'>
+    {% if session['supply_state'] == 'True' %}
+    <button class = "btn btn-outline-dark" value="HideSupply" onclick = 'hideSupplyAjax()'>Hide Supply Line Info</button>
+    {% else %}
+    <button class = "btn btn-dark " value="HideSupply" onclick = 'showSupplyAjax()'>Show Supply Line Info</button>
+    {% endif %}
+    </div>
 </div>
 
 {% endif %}
@@ -136,35 +140,71 @@
                         {% if i == 0 and (session['deck']| length) == 1%}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
-                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button></span>
+                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button></span>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                            
+                            {% if session['supply_state'] == 'True' %}
+                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
+                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
+                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
+                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            {% endif %}
+
+
                         </div>
                         {% elif i == 0 %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Left</button>
-                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'>Right</button></span>
+                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button></span>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+
+                            {% if session['supply_state'] == 'True' %}
+                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
+                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
+                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
+                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            {% endif %}
+
                         </div>
                         {% elif i == (session['deck']| length) - 1 %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'>Left</button>
-                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" disabled>Right</button></span>
+                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
+                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button></span>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                            
+                            <div >
+                            {% if session['supply_state'] == 'True' %}
+                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
+                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
+                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
+                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            {% endif %}
+                            </div>
+
                         </div>
                         {% else %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'>Left</button>
-                            <span><button class="inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'>Right</button></span>
+                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
+                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button></span>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                            
+                            {% if session['supply_state'] == 'True' %}
+                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
+                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
+                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
+                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            {% endif %}
 
                         </div>
                         {% endif %}  
                     {% endfor %}
                 {% endif %}
+
+                
 
             </div>
         </div>
@@ -219,86 +259,6 @@
     </div>
 </div>
 
-<!--JSON.parse('{{ view | tojson }}')
-
-function getPositionY() {
-    }
-      window.addEventListener("load", () => {
-        let loc = JSON.parse('{{ view | tojson }}');
-          console.log(loc)
-        if (loc != ''){
-            let rect = document.getElementById(loc).getBoundingClientRect();
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let y = rect.top + scrollTop
-            console.log(y)
-            
-            window.scrollTo({
-            top: y,
-            left: 0,
-            behavior: 'instant',
-            });
-            }
-        }
-    )
-
-</script>
-
-function sessiontest() {
-    '<%Session["search"] = "test2"; %>';
-    var testsession = '<%= Session["search"] %>'
-    console.log(testsession)
-    $("#test2").load(" #test2 > *");
-    let loc = JSON.parse('{{ view | tojson }}');
-}    
-
-
-
--->
-
-<script>
-
-function getPositionY() {
-    }
-      window.addEventListener("load", () => {
-        let loc = JSON.parse('{{ view | tojson }}')
-          console.log(loc)
-        if (loc != ''){
-            let rect = document.getElementById(loc).getBoundingClientRect();
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let y = rect.top + scrollTop
-            console.log(y)
-            
-            window.scrollTo({
-            top: y,
-            left: 0,
-            behavior: 'instant',
-            });
-            }
-        }
-    )
- 
-function testupdate(value){
-    test_id = value
-
-    req = $.ajax({
-            url : '/test',
-            type: 'POST',
-            contentType: 'application/json;charset=UTF-8',
-            dataType: "json",
-            data : JSON.stringify({ 'test_data' : test_id})
-        })
-    
-        req.done(function() {
-            $("#test-loc").load(location.href + " #test-loc");
-        });
-};
-
-
-
-
-
-
-</script>
 
 
 <!-- 

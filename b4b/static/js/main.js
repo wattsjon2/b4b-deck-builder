@@ -58,9 +58,9 @@ function addAjax(value){
         });
 };
 
+
 function searchAjax(){
     var searchText = document.getElementById('searchtext').value;
-    console.log(searchText)
     req = $.ajax({
             url : '/_search',
             type: 'POST',
@@ -95,14 +95,10 @@ function consolelog(){
     
 };
 
-function showDecks(value){
+function showDecks(){
     req = $.ajax({
         url : '/_showdecks',
-        type: 'POST',
-        contentType: 'application/json;charset=UTF-8',
-        dataType: "json",
-        data : JSON.stringify({ 'user' : value})
-
+        type: 'POST',       
     })
     
     req.done(function() {
@@ -112,18 +108,176 @@ function showDecks(value){
     
 };
 
-function hideDecks(value){
+function hideDecks(){
     req = $.ajax({
         url : '/_hidedecks',
         type: 'POST',
+    })
+    
+    req.done(function() {
+        $("#radio-buttons").load(location.href + " #radio-buttons");
+        
+    });
+    
+};
+
+function showAjax(value){
+    req = $.ajax({
+        url : '/_show',
+        type: 'POST',
         contentType: 'application/json;charset=UTF-8',
         dataType: "json",
-        data : JSON.stringify({ 'user' : value})
+        data : JSON.stringify({ 'deck_id' : value})
 
     })
     
-    req.done(function(value) {
-        $("#radio-buttons").load(location.href + " #radio-buttons");
+    req.done(function() {
+        $("#cards-loc").load(location.href + " #cards-loc");
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#save-loc").load(location.href + " #save-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+
+        element = document.getElementById("name-loc")
+        element.scrollIntoView();
+
+        
+        
+    });
+    
+};
+
+function duplicateAjax(value){
+    req = $.ajax({
+        url : '/_duplicate',
+        type: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+        data : JSON.stringify({ 'deck_id' : value})
+
+    })
+    
+    req.done(function() {
+        $("#cards-loc").load(location.href + " #cards-loc");
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#save-loc").load(location.href + " #save-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+
+        element = document.getElementById("name-loc")
+        element.scrollIntoView();
+    });
+    
+};
+
+function deleteAjax(value){  
+
+    req = $.ajax({
+        url : '/_delete',
+        type: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+        data : JSON.stringify({ 'deck_id' : value })
+
+    })
+    
+    req.done(function() {
+        $("#save-loc").load(location.href + " #save-loc");
+        
+    });    
+
+};
+
+function saveAjax(){
+
+    let nameText = document.getElementById('nametext').value;
+    
+    
+
+    req = $.ajax({
+        url : '/_save',
+        type: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+        data : JSON.stringify({ 'deck_name' : nameText })
+
+    })
+    
+    req.done(function() {
+        $("#cards-loc").load(location.href + " #cards-loc");
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+        $("#save-loc").load(location.href + " #save-loc");
+        
+    });
+    
+};
+
+function updateAjax(){
+
+    let nameText = document.getElementById('nametext').value;
+
+    
+
+    req = $.ajax({
+        url : '/_update',
+        type: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+        data : JSON.stringify({ 'deck_name' : nameText  })
+
+    })
+    
+    req.done(function() {
+        $("#cards-loc").load(location.href + " #cards-loc");
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+        $("#save-loc").load(location.href + " #save-loc");
+        
+    });
+    
+};
+
+function cancelAjax(){
+
+    req = $.ajax({
+        url : '/_cancel',
+        type: 'POST',
+    })
+    
+    req.done(function() {
+        $("#cards-loc").load(location.href + " #cards-loc");
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+        $("#save-loc").load(location.href + " #save-loc");
+        
+    });
+    
+};
+
+function showSupplyAjax(){
+
+    req = $.ajax({
+        url : '/_showsupply',
+        type: 'POST',
+    })
+    
+    req.done(function() {       
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#name-loc").load(location.href + " #name-loc");
+        
+    });
+    
+};
+
+function hideSupplyAjax(){
+
+    req = $.ajax({
+        url : '/_hidesupply',
+        type: 'POST',
+    })
+    
+    req.done(function() {       
+        $("#add-loc").load(location.href + " #add-loc");
+        $("#name-loc").load(location.href + " #name-loc");
         
     });
     

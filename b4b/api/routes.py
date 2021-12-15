@@ -23,8 +23,10 @@ def get_cards_from_all_users(current_user_token):
 def create_card(current_user_token):
     card_name = request.json['card_name']
     card_description = request.json['card_description']
+    supply_line = request.json['supply_line']
+    supply_track = request.json['supply_track']
 
-    card = Card(card_name, card_description)
+    card = Card(card_name, card_description, supply_line, supply_track)
     db.session.add(card)
     db.session.commit()
     response = card_schema.dump(card)
@@ -48,6 +50,8 @@ def update_card(current_user_token, id):
 
     card.card_name = request.json['card_name']
     card.card_description = request.json['card_description']
+    supply_line = request.json['supply_line']
+    supply_track = request.json['supply_track']    
 
     db.session.commit()
     response = card_schema.dump(card)

@@ -121,7 +121,7 @@ class Deck(db.Model):
 # creation of API schema via the marshmallow object
 class CardSchema(ma.Schema):
     class Meta:
-        fields = ['id','card_name','card_description']
+        fields = ['id','card_name','card_description','supply_line', 'supply_track']
 
 
 card_schema = CardSchema()

@@ -25,7 +25,7 @@ ul#horizontal-list li, ul#horizontal-list a{
 }
 
 ul#horizontal-list a:nth-last-child(1){
-    border: 2px solid blue;
+    border: 2px solid darkred;
     border-radius: 11px;
     margin-right: 0.2vw;
 }
@@ -111,7 +111,7 @@ ul#horizontal-list a:nth-last-child(1){
 }
 
 .card-box{
-    height:400px;
+    height:600px;
     overflow-y: scroll;
 }
 #search-field{
@@ -166,6 +166,25 @@ ul#horizontal-list a:nth-last-child(1){
 
 .text-field:focus { 
     outline: none;
-    border-color: #7abdf3;
-    box-shadow: 0 0 0 6px #aad6fa;
+    border-color: darkred;
+    box-shadow: 0 0 0 6px #f07f97;
 }
+
+.footer-section{
+    height:30vw;
+    background-size: contain;
+    
+    
+    background-image:linear-gradient(to top, rgba(36, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),url(../images/b4b\ footer.jpg);
+    position: relative;
+}
+
+.supply-text
+{
+    font-size: .5em;
+    margin-top: -30px
+}
+
+small {
+    font-size: 0.5em; /* 14px/16=0.875em */
+  }
