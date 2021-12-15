@@ -145,10 +145,12 @@
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
                             
                             {% if session['supply_state'] == 'True' %}
-                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
-                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
-                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
-                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            <dl>
+                                <dt style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</dt>
+                                <dd style="font-size:1em;">{{ session['supply_track'][i] }}</dd>
+                                <dt style = 'font-size:.5em; color:darkred;font-style: italic;'>Supply Line</dt>
+                                <dd style = 'font-size:.75em;'>{{ session['supply_line'][i] }}</dd>
+                            </dl>                            
                             {% endif %}
 
 
@@ -161,10 +163,12 @@
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
 
                             {% if session['supply_state'] == 'True' %}
-                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
-                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
-                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
-                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            <dl>
+                                <dt style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</dt>
+                                <dd style="font-size:1em;">{{ session['supply_track'][i] }}</dd>
+                                <dt style = 'font-size:.5em; color:darkred;font-style: italic;'>Supply Line</dt>
+                                <dd style = 'font-size:.75em;'>{{ session['supply_line'][i] }}</dd>
+                            </dl>  
                             {% endif %}
 
                         </div>
@@ -177,10 +181,12 @@
                             
                             <div >
                             {% if session['supply_state'] == 'True' %}
-                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
-                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
-                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
-                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            <dl>
+                                <dt style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</dt>
+                                <dd style="font-size:1em;">{{ session['supply_track'][i] }}</dd>
+                                <dt style = 'font-size:.5em; color:darkred;font-style: italic;'>Supply Line</dt>
+                                <dd style = 'font-size:.75em;'>{{ session['supply_line'][i] }}</dd>
+                            </dl>  
                             {% endif %}
                             </div>
 
@@ -193,10 +199,12 @@
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
                             
                             {% if session['supply_state'] == 'True' %}
-                            <p style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</p>
-                            <p style = 'margin-top: -30px;'>{{ session['supply_track'][i] }}</p>
-                            <p style = 'font-size:.5em; margin-top: -30px;color:darkred;font-style: italic;'>Supply Line</p>
-                            <p style = 'font-size:.75em; margin-top: -30px;'>{{ session['supply_line'][i] }}</p>
+                            <dl>
+                                <dt style="font-size:.5em; color:darkred;font-style: italic;">Supply Track</dt>
+                                <dd style="font-size:1em;">{{ session['supply_track'][i] }}</dd>
+                                <dt style = 'font-size:.5em; color:darkred;font-style: italic;'>Supply Line</dt>
+                                <dd style = 'font-size:.75em;'>{{ session['supply_line'][i] }}</dd>
+                            </dl>  
                             {% endif %}
 
                         </div>
