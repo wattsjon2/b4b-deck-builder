@@ -79,7 +79,7 @@ function searchAjax(){
         
         req.done(function() {
             $("#cards-loc").load(location.href + " #cards-loc");
-            $("#search-loc").load(location.href + " #search-loc");
+            
             
         });
 };
@@ -96,11 +96,6 @@ function resetAjax(){
             $("#search-loc").load(location.href + " #search-loc");
             
         });
-};
-
-function consolelog(){
-    console.log('clicked')
-    
 };
 
 function showDecks(){
