@@ -163,8 +163,8 @@ def addCardAjax():
 
                 return jsonify({'result':'success'})
 
-        else:
-            return jsonify({'result':'failure'})
+    
+        return jsonify({'result':'failure'})
 
         
 
