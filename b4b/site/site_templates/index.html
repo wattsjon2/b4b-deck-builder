@@ -89,6 +89,7 @@
     <div>
         <input class="text-field rounded w-50" type="text" id="nametext" name="fname" placeholder="Name deck here...">
         <button class = "btn btn-success" value="Save" onclick = 'saveAjax()'>Save</button>
+        <button class = "btn btn-secondary" value="Cancel" onclick = 'cancelAjax()'>Clear</button>
         {% if session['supply_state'] == 'True' %}
         <button class = "btn btn-outline-dark" value="HideSupply" onclick = 'hideSupplyAjax()'>Hide Supply Line Info</button>
         {% else %}
