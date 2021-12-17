@@ -141,8 +141,10 @@
                         {% if i == 0 and (session['deck']| length) == 1%}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
-                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button></span>
+                            <div class="d-flex justify-content-between">
+                                <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                                <button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                            </div>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
                             
                             {% if session['supply_state'] == 'True' %}
@@ -159,9 +161,12 @@
                         {% elif i == 0 %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
-                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button></span>
+                            <div class="d-flex justify-content-between">
+                                <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                                <button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button>
+                            </div>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
+                            
 
                             {% if session['supply_state'] == 'True' %}
                             <dl>
@@ -176,8 +181,10 @@
                         {% elif i == (session['deck']| length) - 1 %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
-                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button></span>
+                            <div class="d-flex justify-content-between">
+                                <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
+                                <button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" disabled></button>
+                            </div>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
                             
                             <div >
@@ -195,8 +202,10 @@
                         {% else %}
                         <div class="col-2 mb-2">
                             <img class = 'w-100' src="{{ url_for('static', filename=file_name) }}">
-                            <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
-                            <span><button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button></span>
+                            <div class="d-flex justify-content-between">
+                                <button class="bi-arrow-left inner-btn btn btn-primary btn-sm mt-1" name = 'moveLeftAjax' value = "{{i}}" onclick='moveLeftAjax(this.value)'></button>
+                                <button class="bi-arrow-right inner-btn btn btn-primary btn-sm mt-1" name = 'moveRightAjax' value = "{{i}}" onclick='moveRightAjax(this.value)'></button>
+                            </div>
                             <button class="full-btn btn btn-danger btn-sm mt-1"  name = 'removeCard' value = "{{i}}" onclick='removeAjax(this.value)'>Remove</button>
                             
                             {% if session['supply_state'] == 'True' %}
