@@ -68,7 +68,7 @@ function addAjax(value){
 
 
 function searchAjax(){
-    var searchText = document.getElementById('searchtext').value;
+    let searchText = document.getElementById('searchtext').value;
     req = $.ajax({
             url : '/_search',
             type: 'POST',
@@ -93,7 +93,8 @@ function resetAjax(){
         
         req.done(function() {
             $("#cards-loc").load(location.href + " #cards-loc");
-            $("#search-loc").load(location.href + " #search-loc");
+            document.getElementById('searchtext').value = '';
+
             
         });
 };
