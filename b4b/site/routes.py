@@ -151,13 +151,17 @@ def addCardAjax():
     if request.method == "POST":
         cardid = request.json['card_id']
         mydeck = session.get('deck')
-        if len(mydeck) < 15:
-            mydeck.append(int(cardid))
-            session['deck'] = mydeck                
-            session['supply_line'].append(getSupplyLine(int(cardid)))
-            session['supply_track'].append(getSupplyTrack(int(cardid)))
 
-            return jsonify({'result':'success'})
+        deckset = set(mydeck)
+        if cardid not in deckset:
+        
+            if len(mydeck) < 15:
+                mydeck.append(int(cardid))
+                session['deck'] = mydeck                
+                session['supply_line'].append(getSupplyLine(int(cardid)))
+                session['supply_track'].append(getSupplyTrack(int(cardid)))
+
+                return jsonify({'result':'success'})
 
         else:
             return jsonify({'result':'failure'})
